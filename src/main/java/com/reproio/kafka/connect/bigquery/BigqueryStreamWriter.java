@@ -126,6 +126,13 @@ public class BigqueryStreamWriter implements Closeable {
             Code.DEADLINE_EXCEEDED,
             Code.UNAVAILABLE);
 
+    public void printDebugInfo() {
+      log.debug(">>>");
+      log.debug("Error: {}", error);
+      log.debug("Storage Exception: {}", storageException);
+      log.debug("Storage Error Code: {}", getStorageErrorCode());
+    }
+
     public void setError(Throwable error) {
       this.error = error;
       this.storageException = Exceptions.toStorageException(error);
