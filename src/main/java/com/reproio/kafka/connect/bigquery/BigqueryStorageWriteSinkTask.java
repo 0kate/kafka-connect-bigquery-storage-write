@@ -197,7 +197,7 @@ public class BigqueryStorageWriteSinkTask extends SinkTask {
     corruptedRowOffsets.clear();
 
     // NOTE: Print debug info to investigate error info temporarily
-    appendContext.printDebugInfo();
+    appendContext.printStorageExceptionsInfo();
 
     if (appendContext.isAlreadyExists()) {
       return true;
