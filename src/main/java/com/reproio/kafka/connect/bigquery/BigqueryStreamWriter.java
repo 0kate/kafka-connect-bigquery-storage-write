@@ -128,9 +128,9 @@ public class BigqueryStreamWriter implements Closeable {
 
     public void printStorageExceptionsInfo() {
       log.info(">>>");
-      log.info("Error: {}", error);
-      log.info("Storage Exception: {}", storageException);
-      log.info("Storage Error Code: {}", getStorageErrorCode());
+      log.info("Error class: {}", error == null ? "null" : error.getClass().getName());
+      log.info("Error message: {}", error == null ? "null" : error.getMessage());
+      log.info("Derived storage code: {}", getStorageErrorCode());
     }
 
     public void setError(Throwable error) {
@@ -151,6 +151,8 @@ public class BigqueryStreamWriter implements Closeable {
     }
 
     public boolean hasError() {
+      log.info("appendRowsResponse: {}", appendRowsResponse);
+      log.info("appendRowsResponse.getRowErrorsCount: {}", appendRowsResponse.getRowErrorsCount());
       return error != null
           || (appendRowsResponse != null && appendRowsResponse.getRowErrorsCount() > 0);
     }
@@ -376,6 +378,11 @@ public class BigqueryStreamWriter implements Closeable {
             result.getAppendResult().getSerializedSize(),
             result.getAppendResult().getOffset());
       }
+      log.info(">>> AppendCompleteCallback.onSuccess");
+      log.info(
+          "Appended Rows to WriterStream: {size={}, offset={}}",
+          result.getAppendResult().getSerializedSize(),
+          result.getAppendResult().getOffset());
       context.setAppendRowsResponse(result);
       done();
     }
